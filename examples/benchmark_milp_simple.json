@@ -1,0 +1,42 @@
+{
+  "name": "Simple Mixed Integer LP",
+  "problem_type": "MILP",
+  "objective": {
+    "sense": "max",
+    "coefficients": {
+      "x": 8,
+      "y": 5
+    }
+  },
+  "variables": {
+    "x": {
+      "type": "continuous",
+      "lb": 0
+    },
+    "y": {
+      "type": "integer",
+      "lb": 0,
+      "ub": 4
+    }
+  },
+  "constraints": [
+    {
+      "name": "machine_hours",
+      "coefficients": {
+        "x": 2,
+        "y": 1
+      },
+      "sense": "<=",
+      "rhs": 7
+    },
+    {
+      "name": "shift_limit",
+      "coefficients": {
+        "x": 1,
+        "y": 1
+      },
+      "sense": "<=",
+      "rhs": 6
+    }
+  ]
+}

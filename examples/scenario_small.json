@@ -1,0 +1,55 @@
+﻿{
+  "stops": [
+    {"id": "DEPOT", "type": "depot", "planned_time": "00:00"},
+    {"id": "P1", "type": "pickup", "planned_time": "07:25", "load": 10, "school_id": "S_A"},
+    {"id": "P2", "type": "pickup", "planned_time": "07:35", "load": 8, "school_id": "S_A"},
+    {"id": "P3", "type": "pickup", "planned_time": "07:30", "load": 9, "school_id": "S_B"},
+    {"id": "P4", "type": "pickup", "planned_time": "07:42", "load": 7, "school_id": "S_B"},
+    {"id": "S_A", "type": "school", "planned_time": "08:15", "bell_time": "08:15"},
+    {"id": "S_B", "type": "school", "planned_time": "08:20", "bell_time": "08:20"}
+  ],
+  "buses": [
+    {"id": "B1", "capacity": 30, "start_time": "07:00", "route_pre": ["P1", "P2", "S_A"]},
+    {"id": "B2", "capacity": 30, "start_time": "07:00", "route_pre": ["P3", "P4", "S_B"]},
+    {"id": "B3", "capacity": 30, "start_time": "07:00", "route_pre": []}
+  ],
+  "states": [
+    {
+      "bus_id": "B1",
+      "eta": "07:32",
+      "loc": "P1",
+      "onboard": {"S_A": 10},
+      "passed": ["P1"],
+      "remaining": ["P2", "S_A"],
+      "active": true
+    },
+    {
+      "bus_id": "B2",
+      "eta": "07:20",
+      "loc": "DEPOT",
+      "onboard": {},
+      "passed": [],
+      "remaining": ["P3", "P4", "S_B"],
+      "active": true
+    },
+    {
+      "bus_id": "B3",
+      "eta": "07:20",
+      "loc": "DEPOT",
+      "onboard": {},
+      "passed": [],
+      "remaining": [],
+      "active": true
+    }
+  ],
+  "travel_time": {
+    "DEPOT": {"DEPOT": 0, "P1": 8, "P2": 12, "P3": 10, "P4": 14, "S_A": 18, "S_B": 20},
+    "P1": {"DEPOT": 8, "P1": 0, "P2": 6, "P3": 14, "P4": 18, "S_A": 10, "S_B": 22},
+    "P2": {"DEPOT": 11, "P1": 6, "P2": 0, "P3": 15, "P4": 12, "S_A": 8, "S_B": 19},
+    "P3": {"DEPOT": 10, "P1": 14, "P2": 15, "P3": 0, "P4": 7, "S_A": 20, "S_B": 11},
+    "P4": {"DEPOT": 13, "P1": 18, "P2": 12, "P3": 7, "P4": 0, "S_A": 18, "S_B": 8},
+    "S_A": {"DEPOT": 16, "P1": 10, "P2": 8, "P3": 20, "P4": 18, "S_A": 0, "S_B": 12},
+    "S_B": {"DEPOT": 19, "P1": 22, "P2": 19, "P3": 11, "P4": 8, "S_A": 12, "S_B": 0}
+  },
+  "default_travel_time": 999999
+}

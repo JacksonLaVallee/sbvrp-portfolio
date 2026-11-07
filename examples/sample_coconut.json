@@ -1,0 +1,41 @@
+{
+  "name": "Benchmark Problem",
+  "variables": {
+    "r": {
+      "type": "integer",
+      "lb": 0
+    },
+    "o": {
+      "type": "integer",
+      "lb": 0
+    }
+  },
+  "objective": {
+    "sense": "max",
+    "coefficients": {
+      "r": 50,
+      "o": 30
+    }
+  },
+  "constraints": [
+    {
+      "name": "budget constraint",
+      "coefficients": {
+        "r": 10,
+        "o": 8
+      },
+      "sense": "<=",
+      "rhs": 200
+    },
+    {
+      "name": "ordering constraint: rickshaw trips no more than o",
+      "coefficients": {
+        "r": 1,
+        "o": -1
+      },
+      "sense": "<=",
+      "rhs": 0
+    }
+  ],
+  "problem_type": "ILP"
+}

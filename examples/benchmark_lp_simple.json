@@ -1,0 +1,48 @@
+{
+  "name": "Simple Production LP",
+  "problem_type": "LP",
+  "objective": {
+    "sense": "max",
+    "coefficients": {
+      "x": 3,
+      "y": 5
+    }
+  },
+  "variables": {
+    "x": {
+      "type": "continuous",
+      "lb": 0
+    },
+    "y": {
+      "type": "continuous",
+      "lb": 0
+    }
+  },
+  "constraints": [
+    {
+      "name": "line_a",
+      "coefficients": {
+        "x": 1
+      },
+      "sense": "<=",
+      "rhs": 4
+    },
+    {
+      "name": "line_b",
+      "coefficients": {
+        "y": 1
+      },
+      "sense": "<=",
+      "rhs": 6
+    },
+    {
+      "name": "mix_cap",
+      "coefficients": {
+        "x": 3,
+        "y": 2
+      },
+      "sense": "<=",
+      "rhs": 18
+    }
+  ]
+}

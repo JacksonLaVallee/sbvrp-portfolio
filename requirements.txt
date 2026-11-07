@@ -1,0 +1,6 @@
+ortools
+streamlit
+pandas
+plotly
+pyarrow
+pytest

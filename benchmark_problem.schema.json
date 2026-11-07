@@ -1,0 +1,803 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./benchmark_problem.schema.json",
+  "title": "SchoolRide Benchmark Problem",
+  "description": "Input contract for schoolride.benchmark_solver.parse_benchmark_problem(). This schema accepts the parser's supported aliases and both variable encodings while documenting the remaining semantic rules in benchmark_problem.schema.md.",
+  "$comment": "Important semantic rules that plain JSON Schema cannot fully express are documented in benchmark_problem.schema.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "variables",
+    "objective",
+    "constraints"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "default": "Benchmark Problem",
+      "description": "Human-readable problem name."
+    },
+    "problem_type": {
+      "$ref": "#/$defs/problemTypeAlias"
+    },
+    "type": {
+      "$ref": "#/$defs/problemTypeAlias",
+      "description": "Alias for problem_type. If both are present, problem_type wins at runtime."
+    },
+    "variables": {
+      "$ref": "#/$defs/variables"
+    },
+    "objective": {
+      "$ref": "#/$defs/objective"
+    },
+    "constraints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/constraint"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "$ref": "#/$defs/problemTypeConsistency"
+    }
+  ],
+  "examples": [
+    {
+      "name": "Simple Production LP",
+      "problem_type": "LP",
+      "objective": {
+        "sense": "max",
+        "coefficients": {
+          "x": 3,
+          "y": 5
+        }
+      },
+      "variables": {
+        "x": {
+          "type": "continuous",
+          "lb": 0
+        },
+        "y": {
+          "type": "continuous",
+          "lb": 0
+        }
+      },
+      "constraints": [
+        {
+          "name": "line_a",
+          "coefficients": {
+            "x": 1
+          },
+          "sense": "<=",
+          "rhs": 4
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "nonEmptyPropertyName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "problemTypeAlias": {
+      "type": "string",
+      "description": "Accepted values include LP, linear program, MILP, MIP, mixed integer linear program, ILP, integer linear program, BINARY, binary ILP, and BILP. Case-insensitive. For multi-word aliases, use a single space, underscore, or hyphen between words.",
+      "pattern": "^\\s*(?:[Ll][Pp]|[Ll][Ii][Nn][Ee][Aa][Rr][ _-][Pp][Rr][Oo][Gg][Rr][Aa][Mm]|[Mm][Ii][Ll][Pp]|[Mm][Ii][Pp]|[Mm][Ii][Xx][Ee][Dd][ _-][Ii][Nn][Tt][Ee][Gg][Ee][Rr][ _-][Ll][Ii][Nn][Ee][Aa][Rr][ _-][Pp][Rr][Oo][Gg][Rr][Aa][Mm]|[Ii][Ll][Pp]|[Ii][Nn][Tt][Ee][Gg][Ee][Rr][ _-][Ll][Ii][Nn][Ee][Aa][Rr][ _-][Pp][Rr][Oo][Gg][Rr][Aa][Mm]|[Bb][Ii][Nn][Aa][Rr][Yy]|[Bb][Ii][Nn][Aa][Rr][Yy][ _-][Ii][Ll][Pp]|[Bb][Ii][Ll][Pp])\\s*$"
+    },
+    "problemTypeLP": {
+      "$ref": "#/$defs/problemTypeAlias",
+      "pattern": "^\\s*(?:[Ll][Pp]|[Ll][Ii][Nn][Ee][Aa][Rr][ _-][Pp][Rr][Oo][Gg][Rr][Aa][Mm])\\s*$"
+    },
+    "problemTypeILP": {
+      "$ref": "#/$defs/problemTypeAlias",
+      "pattern": "^\\s*(?:[Ii][Ll][Pp]|[Ii][Nn][Tt][Ee][Gg][Ee][Rr][ _-][Ll][Ii][Nn][Ee][Aa][Rr][ _-][Pp][Rr][Oo][Gg][Rr][Aa][Mm])\\s*$"
+    },
+    "problemTypeBinary": {
+      "$ref": "#/$defs/problemTypeAlias",
+      "pattern": "^\\s*(?:[Bb][Ii][Nn][Aa][Rr][Yy]|[Bb][Ii][Nn][Aa][Rr][Yy][ _-][Ii][Ll][Pp]|[Bb][Ii][Ll][Pp])\\s*$"
+    },
+    "variableTypeAlias": {
+      "type": "string",
+      "description": "Accepted values include continuous/cont/real/float, integer/int, and binary/bool/boolean. Case-insensitive.",
+      "pattern": "^\\s*(?:[Cc][Oo][Nn][Tt][Ii][Nn][Uu][Oo][Uu][Ss]|[Cc][Oo][Nn][Tt]|[Rr][Ee][Aa][Ll]|[Ff][Ll][Oo][Aa][Tt]|[Ii][Nn][Tt][Ee][Gg][Ee][Rr]|[Ii][Nn][Tt]|[Bb][Ii][Nn][Aa][Rr][Yy]|[Bb][Oo][Oo][Ll]|[Bb][Oo][Oo][Ll][Ee][Aa][Nn])\\s*$"
+    },
+    "continuousVariableTypeAlias": {
+      "$ref": "#/$defs/variableTypeAlias",
+      "pattern": "^\\s*(?:[Cc][Oo][Nn][Tt][Ii][Nn][Uu][Oo][Uu][Ss]|[Cc][Oo][Nn][Tt]|[Rr][Ee][Aa][Ll]|[Ff][Ll][Oo][Aa][Tt])\\s*$"
+    },
+    "integerVariableTypeAlias": {
+      "$ref": "#/$defs/variableTypeAlias",
+      "pattern": "^\\s*(?:[Ii][Nn][Tt][Ee][Gg][Ee][Rr]|[Ii][Nn][Tt])\\s*$"
+    },
+    "binaryVariableTypeAlias": {
+      "$ref": "#/$defs/variableTypeAlias",
+      "pattern": "^\\s*(?:[Bb][Ii][Nn][Aa][Rr][Yy]|[Bb][Oo][Oo][Ll]|[Bb][Oo][Oo][Ll][Ee][Aa][Nn])\\s*$"
+    },
+    "objectiveSenseAlias": {
+      "type": "string",
+      "description": "Accepted values include max, maximize, min, and minimize. Case-insensitive.",
+      "pattern": "^\\s*(?:[Mm][Aa][Xx](?:[Ii][Mm][Ii][Zz][Ee])?|[Mm][Ii][Nn](?:[Ii][Mm][Ii][Zz][Ee])?)\\s*$"
+    },
+    "constraintSenseAlias": {
+      "type": "string",
+      "description": "Accepted values include <=, >=, =, ==, le, leq, ge, geq, and eq.",
+      "pattern": "^\\s*(?:<=|>=|=|==|[Ll][Ee](?:[Qq])?|[Gg][Ee](?:[Qq])?|[Ee][Qq])\\s*$"
+    },
+    "coefficientMap": {
+      "type": "object",
+      "description": "Sparse map from variable name to numeric coefficient. Coefficient keys must refer to declared variables; that cross-reference rule is documented in the companion Markdown file.",
+      "default": {},
+      "propertyNames": {
+        "$ref": "#/$defs/nonEmptyPropertyName"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "variableSpecCommon": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Required in array form. In object form, the outer key is authoritative and this field is ignored at runtime."
+        },
+        "type": {
+          "$ref": "#/$defs/variableTypeAlias"
+        },
+        "kind": {
+          "$ref": "#/$defs/variableTypeAlias",
+          "description": "Alias for type. If both are present, type wins at runtime."
+        },
+        "lb": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Preferred lower-bound field. If both lb and lower_bound are present, lb wins at runtime."
+        },
+        "lower_bound": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Alias for lb."
+        },
+        "ub": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Preferred upper-bound field. If both ub and upper_bound are present, ub wins at runtime."
+        },
+        "upper_bound": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Alias for ub."
+        }
+      }
+    },
+    "effectiveContinuousKind": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/continuousVariableTypeAlias"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "not": {
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            {
+              "required": [
+                "kind"
+              ]
+            },
+            {
+              "properties": {
+                "kind": {
+                  "$ref": "#/$defs/continuousVariableTypeAlias"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "not": {
+            "anyOf": [
+              {
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "required": [
+                  "kind"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "effectiveIntegerKind": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/integerVariableTypeAlias"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "not": {
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            {
+              "required": [
+                "kind"
+              ]
+            },
+            {
+              "properties": {
+                "kind": {
+                  "$ref": "#/$defs/integerVariableTypeAlias"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "effectiveBinaryKind": {
+      "anyOf": [
+        {
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/binaryVariableTypeAlias"
+            }
+          }
+        },
+        {
+          "allOf": [
+            {
+              "not": {
+                "required": [
+                  "type"
+                ]
+              }
+            },
+            {
+              "required": [
+                "kind"
+              ]
+            },
+            {
+              "properties": {
+                "kind": {
+                  "$ref": "#/$defs/binaryVariableTypeAlias"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "variableBoundRules": {
+      "allOf": [
+        {
+          "if": {
+            "$ref": "#/$defs/effectiveContinuousKind"
+          },
+          "then": {
+            "properties": {
+              "lb": {
+                "type": "number"
+              },
+              "lower_bound": {
+                "type": "number"
+              },
+              "ub": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "upper_bound": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "$ref": "#/$defs/effectiveIntegerKind"
+          },
+          "then": {
+            "properties": {
+              "lb": {
+                "type": "integer"
+              },
+              "lower_bound": {
+                "type": "integer"
+              },
+              "ub": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "upper_bound": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "$ref": "#/$defs/effectiveBinaryKind"
+          },
+          "then": {
+            "properties": {
+              "lb": {
+                "enum": [
+                  0,
+                  1,
+                  null
+                ]
+              },
+              "lower_bound": {
+                "enum": [
+                  0,
+                  1,
+                  null
+                ]
+              },
+              "ub": {
+                "enum": [
+                  0,
+                  1,
+                  null
+                ]
+              },
+              "upper_bound": {
+                "enum": [
+                  0,
+                  1,
+                  null
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "objectFormVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/variableSpecCommon"
+        },
+        {
+          "$ref": "#/$defs/variableBoundRules"
+        }
+      ]
+    },
+    "arrayFormVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/variableSpecCommon"
+        },
+        {
+          "required": [
+            "name"
+          ]
+        },
+        {
+          "$ref": "#/$defs/variableBoundRules"
+        }
+      ]
+    },
+    "objectFormContinuousVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/objectFormVariableSpec"
+        },
+        {
+          "$ref": "#/$defs/effectiveContinuousKind"
+        }
+      ]
+    },
+    "arrayFormContinuousVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/arrayFormVariableSpec"
+        },
+        {
+          "$ref": "#/$defs/effectiveContinuousKind"
+        }
+      ]
+    },
+    "objectFormNonContinuousVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/objectFormVariableSpec"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/effectiveIntegerKind"
+            },
+            {
+              "$ref": "#/$defs/effectiveBinaryKind"
+            }
+          ]
+        }
+      ]
+    },
+    "arrayFormNonContinuousVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/arrayFormVariableSpec"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/effectiveIntegerKind"
+            },
+            {
+              "$ref": "#/$defs/effectiveBinaryKind"
+            }
+          ]
+        }
+      ]
+    },
+    "objectFormBinaryVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/objectFormVariableSpec"
+        },
+        {
+          "$ref": "#/$defs/effectiveBinaryKind"
+        }
+      ]
+    },
+    "arrayFormBinaryVariableSpec": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/arrayFormVariableSpec"
+        },
+        {
+          "$ref": "#/$defs/effectiveBinaryKind"
+        }
+      ]
+    },
+    "variablesObject": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/nonEmptyPropertyName"
+      },
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/objectFormVariableSpec"
+          },
+          {
+            "type": "null",
+            "description": "Null is treated like an empty spec in object form, which becomes a default continuous variable with lb=0."
+          }
+        ]
+      }
+    },
+    "variablesArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/arrayFormVariableSpec"
+      }
+    },
+    "variables": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/variablesObject"
+        },
+        {
+          "$ref": "#/$defs/variablesArray"
+        }
+      ]
+    },
+    "allContinuousVariables": {
+      "oneOf": [
+        {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/nonEmptyPropertyName"
+          },
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/objectFormContinuousVariableSpec"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/arrayFormContinuousVariableSpec"
+          }
+        }
+      ]
+    },
+    "noContinuousVariables": {
+      "oneOf": [
+        {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/nonEmptyPropertyName"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/objectFormNonContinuousVariableSpec"
+          }
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/arrayFormNonContinuousVariableSpec"
+          }
+        }
+      ]
+    },
+    "allBinaryVariables": {
+      "oneOf": [
+        {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": {
+            "$ref": "#/$defs/nonEmptyPropertyName"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/objectFormBinaryVariableSpec"
+          }
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/arrayFormBinaryVariableSpec"
+          }
+        }
+      ]
+    },
+    "objective": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sense": {
+          "$ref": "#/$defs/objectiveSenseAlias"
+        },
+        "coefficients": {
+          "$ref": "#/$defs/coefficientMap"
+        }
+      }
+    },
+    "constraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rhs"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Optional row name. If omitted, the runtime assigns c1, c2, ..."
+        },
+        "coefficients": {
+          "$ref": "#/$defs/coefficientMap"
+        },
+        "sense": {
+          "$ref": "#/$defs/constraintSenseAlias"
+        },
+        "rhs": {
+          "type": "number"
+        }
+      }
+    },
+    "problemTypeConsistency": {
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "problem_type"
+            ],
+            "properties": {
+              "problem_type": {
+                "$ref": "#/$defs/problemTypeLP"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "variables": {
+                "$ref": "#/$defs/allContinuousVariables"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "allOf": [
+              {
+                "not": {
+                  "required": [
+                    "problem_type"
+                  ]
+                }
+              },
+              {
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/$defs/problemTypeLP"
+                  }
+                }
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "variables": {
+                "$ref": "#/$defs/allContinuousVariables"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "problem_type"
+            ],
+            "properties": {
+              "problem_type": {
+                "$ref": "#/$defs/problemTypeILP"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "variables": {
+                "$ref": "#/$defs/noContinuousVariables"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "allOf": [
+              {
+                "not": {
+                  "required": [
+                    "problem_type"
+                  ]
+                }
+              },
+              {
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/$defs/problemTypeILP"
+                  }
+                }
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "variables": {
+                "$ref": "#/$defs/noContinuousVariables"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "problem_type"
+            ],
+            "properties": {
+              "problem_type": {
+                "$ref": "#/$defs/problemTypeBinary"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "variables": {
+                "$ref": "#/$defs/allBinaryVariables"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "allOf": [
+              {
+                "not": {
+                  "required": [
+                    "problem_type"
+                  ]
+                }
+              },
+              {
+                "required": [
+                  "type"
+                ]
+              },
+              {
+                "properties": {
+                  "type": {
+                    "$ref": "#/$defs/problemTypeBinary"
+                  }
+                }
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "variables": {
+                "$ref": "#/$defs/allBinaryVariables"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

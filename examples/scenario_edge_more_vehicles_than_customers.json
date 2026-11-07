@@ -1,0 +1,61 @@
+{
+  "stops": [
+    {"id": "DEPOT", "type": "depot", "planned_time": "00:00"},
+    {"id": "P1", "type": "pickup", "planned_time": "07:10", "load": 3, "school_id": "S_A"},
+    {"id": "P2", "type": "pickup", "planned_time": "07:18", "load": 2, "school_id": "S_B"},
+    {"id": "S_A", "type": "school", "planned_time": "07:40", "bell_time": "07:40"},
+    {"id": "S_B", "type": "school", "planned_time": "07:48", "bell_time": "07:48"}
+  ],
+  "buses": [
+    {"id": "B1", "capacity": 10, "start_time": "07:00", "route_pre": ["P1", "S_A"]},
+    {"id": "B2", "capacity": 10, "start_time": "07:00", "route_pre": ["P2", "S_B"]},
+    {"id": "B3", "capacity": 10, "start_time": "07:00", "route_pre": []},
+    {"id": "B4", "capacity": 10, "start_time": "07:00", "route_pre": []}
+  ],
+  "states": [
+    {
+      "bus_id": "B1",
+      "eta": "07:00",
+      "loc": "DEPOT",
+      "onboard": {},
+      "passed": [],
+      "remaining": ["P1", "S_A"],
+      "active": true
+    },
+    {
+      "bus_id": "B2",
+      "eta": "07:00",
+      "loc": "DEPOT",
+      "onboard": {},
+      "passed": [],
+      "remaining": ["P2", "S_B"],
+      "active": true
+    },
+    {
+      "bus_id": "B3",
+      "eta": "07:00",
+      "loc": "DEPOT",
+      "onboard": {},
+      "passed": [],
+      "remaining": [],
+      "active": true
+    },
+    {
+      "bus_id": "B4",
+      "eta": "07:00",
+      "loc": "DEPOT",
+      "onboard": {},
+      "passed": [],
+      "remaining": [],
+      "active": true
+    }
+  ],
+  "travel_time": {
+    "DEPOT": {"DEPOT": 0, "P1": 9, "P2": 13, "S_A": 18, "S_B": 20},
+    "P1": {"DEPOT": 9, "P1": 0, "P2": 7, "S_A": 11, "S_B": 17},
+    "P2": {"DEPOT": 13, "P1": 7, "P2": 0, "S_A": 16, "S_B": 10},
+    "S_A": {"DEPOT": 18, "P1": 11, "P2": 16, "S_A": 0, "S_B": 12},
+    "S_B": {"DEPOT": 20, "P1": 17, "P2": 10, "S_A": 12, "S_B": 0}
+  },
+  "default_travel_time": 999999
+}

@@ -1,0 +1,27 @@
+﻿{
+  "objective": {
+    "wait": 1.0,
+    "school_delay": 1.0,
+    "route_change": 0.1,
+    "ride_violation": 1.0
+  },
+  "constraints": {
+    "enforce_c1_coverage": true,
+    "enforce_c2_uniqueness": true,
+    "enforce_c3_capacity": true,
+    "enforce_c4_mixed_load": true,
+    "enforce_c5_dropoff": true,
+    "enforce_c6_early_arrival": true,
+    "school_start_time": "08:00",
+    "early_arrival_buffer": 5,
+    "service_time_per_student": 0.25,
+    "max_ride_time": 60
+  },
+  "solver": {
+    "enable_pruning": true,
+    "max_candidate_buses": 3,
+    "per_vehicle_top_n": 5,
+    "global_top_m": 20,
+    "infeasible_penalty": 100000000
+  }
+}

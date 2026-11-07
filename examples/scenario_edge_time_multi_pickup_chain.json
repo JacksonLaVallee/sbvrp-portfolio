@@ -1,0 +1,29 @@
+{
+  "stops": [
+    {"id": "DEPOT", "type": "depot", "planned_time": "00:00"},
+    {"id": "P1", "type": "pickup", "planned_time": "06:59", "load": 2, "school_id": "S_A"},
+    {"id": "P2", "type": "pickup", "planned_time": "07:09", "load": 3, "school_id": "S_A"},
+    {"id": "S_A", "type": "school", "planned_time": "08:15", "bell_time": "08:15"}
+  ],
+  "buses": [
+    {"id": "B1", "capacity": 20, "start_time": "06:45", "route_pre": ["P1", "P2", "S_A"]}
+  ],
+  "states": [
+    {
+      "bus_id": "B1",
+      "eta": "06:59",
+      "loc": "DEPOT",
+      "onboard": {},
+      "passed": [],
+      "remaining": ["P1", "P2", "S_A"],
+      "active": true
+    }
+  ],
+  "travel_time": {
+    "DEPOT": {"DEPOT": 0, "P1": 0, "P2": 10, "S_A": 61},
+    "P1": {"DEPOT": 0, "P1": 0, "P2": 10, "S_A": 61},
+    "P2": {"DEPOT": 10, "P1": 10, "P2": 0, "S_A": 50},
+    "S_A": {"DEPOT": 61, "P1": 61, "P2": 50, "S_A": 0}
+  },
+  "default_travel_time": 999999
+}

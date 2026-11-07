@@ -1,0 +1,25 @@
+{
+  "stops": [
+    {"id": "MID", "type": "depot", "planned_time": "00:00"},
+    {"id": "S_A", "type": "school", "planned_time": "08:15", "bell_time": "08:15"}
+  ],
+  "buses": [
+    {"id": "B1", "capacity": 20, "start_time": "06:30", "route_pre": ["S_A"]}
+  ],
+  "states": [
+    {
+      "bus_id": "B1",
+      "eta": "06:59",
+      "loc": "MID",
+      "onboard": {"S_A": 2},
+      "passed": [],
+      "remaining": ["S_A"],
+      "active": true
+    }
+  ],
+  "travel_time": {
+    "MID": {"MID": 0, "S_A": 61},
+    "S_A": {"MID": 61, "S_A": 0}
+  },
+  "default_travel_time": 999999
+}

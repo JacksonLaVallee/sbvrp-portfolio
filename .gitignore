@@ -1,0 +1,22 @@
+﻿# virtual environments
+.venv/
+venv/
+
+# editor settings
+.vscode/
+
+# Python cache / test cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# local env / secrets
+.env
+.env.*
+.streamlit/secrets.toml
+
+# OS junk
+.DS_Store
+Thumbs.db

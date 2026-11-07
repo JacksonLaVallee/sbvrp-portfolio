@@ -1,0 +1,8 @@
+﻿{
+  "removed_buses": [],
+  "disrupted_arcs": [["P3", "P4"]],
+  "travel_time_updates": {
+    "P3": {"P4": 999999},
+    "P4": {"P3": 999999}
+  }
+}
